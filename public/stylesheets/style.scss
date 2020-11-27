@@ -1,0 +1,159 @@
+@use "sass:color";
+
+$colors: (
+    primary: #34626c,
+    accent: #c6b497,
+    primary-dark: darken(#34626c, 5%),
+    primary-text: #fff,
+);
+
+$font: Montserrat, Roboto;
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Larger tablets and desktops
+$screen-xxl-min: 1700px;
+
+// Small devices
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+// Medium devices
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+// Large devices
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+// Extra large devices
+@mixin xxl {
+    @media (min-width: #{$screen-xxl-min}) {
+        @content;
+    }
+}
+@function color($color-name) {
+    @return map-get($colors, $color-name);
+}
+
+@mixin desktop {
+    @media (max-width: #{$mobile}) {
+        @content;
+    }
+}
+
+html,
+body {
+    height: 100%;
+    color: color(primary-text);
+    font-family: $font;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#bg2,
+#bg {
+    background-color: color(accent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -2;
+}
+
+#bg {
+    background-color: color(primary);
+    clip-path: polygon(0 0, 55% 0, 100% 100%, 0% 100%);
+    @include md {
+        clip-path: polygon(0 0, 65% 0, 100% 100%, 0% 100%);
+    }
+    @include lg {
+        clip-path: polygon(0 0, 75% 0, 100% 100%, 0% 100%);
+    }
+    @include xl {
+        clip-path: polygon(0 0, 78% 0, 100% 100%, 0% 100%);
+    }
+    @include xxl {
+        clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    }
+    z-index: -1;
+}
+
+button {
+    font-family: $font;
+    color: color(primary-text);
+    background-color: color(primary);
+    border: none;
+}
+
+.navbar {
+    padding: 20px;
+
+    #logo {
+        font-weight: 200;
+        text-transform: uppercase;
+        font-size: 2em;
+    }
+    ul {
+        display: grid;
+        grid-template-columns: 55% auto;
+        list-style-type: none;
+
+        @include md {
+            grid-template-columns: 60% auto;
+        }
+        li {
+            display: inline;
+        }
+        .nav-links {
+            padding-left: 1em;
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            justify-self: center;
+            @include md {
+                padding-left: 2em;
+            }
+            button {
+                margin: 0 1em;
+                border: 1px solid color(primary-dark);
+                padding: 0.2em 0.5em;
+                border-radius: 4px;
+                @include md {
+                    margin: 0 2em;
+                    padding: 0.5em 0.7em;
+                }
+            }
+        }
+    }
+}
