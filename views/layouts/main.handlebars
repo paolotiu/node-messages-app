@@ -12,19 +12,21 @@
     <header class="navbar">
         <ul>
             <li>
-                <span id="logo">Chatty</span>
+                <a href="/"><span id="logo">Chatty</span></a>
             </li>
+            {{#if loggedIn}}
 
+            {{/if}}
             <div class="nav-links">
                 <li>
-                    <button class="nav-links__button">
+                    <a href="/login" class="nav-links__link">
                         Log-In
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="nav-links__button">
+                    <a href="/sign-up" class="nav-links__link">
                         Sign-Up
-                    </button>
+                    </a>
                 </li>
             </div>
         </ul>

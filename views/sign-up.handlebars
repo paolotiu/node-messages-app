@@ -1,0 +1,29 @@
+<div class="form-wrapper">
+    <form action="/sign-up" method="POST" class="form">
+        <h1 class="form__title">{{title}}</h1>
+        <div class="form__input-container">
+            <label for="firstname">First name:</label>
+            <input type="text" name="firstname" value={{user.firstname}}>
+        </div>
+        <div class="form__input-container">
+            <label for="lastname">Last name:</label>
+            <input type="text" name="lastname" value={{user.lastname}}>
+        </div>
+        <div class="form_input-container">
+            <label for="username">Username:</label>
+            <input type="text" name="username" value={{user.username}}>
+        </div>
+        <div class="form_input-container">
+            <label for="password">Password:</label>
+            <input type="text" name="password">
+        </div>
+        <ul class="form__errors">
+            {{#each errors}}
+            <li>{{message}}</li>
+            {{/each}}
+        </ul>
+
+        <button type="submit">Sign up</button>
+
+    </form>
+</div>
