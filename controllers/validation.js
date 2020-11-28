@@ -1,13 +1,15 @@
 const { body, validationResult } = require('express-validator');
 const Joi = require('joi');
 const passwordComplexity = require('joi-password-complexity');
-const nameMessages = {
-    'string.min': 'length must be at least 2 characters long',
-    'string.max': 'length must be less than or equal to 100 characters long',
-    'string.alphanum': 'must only contain alpha-numeric characters',
-    'string.empty': 'field is required',
-    'string.pattern': 'Password must be ',
-};
+function createMessages(name) {
+    return {
+        'string.min': name + ' must be at least 2 characters long',
+        'string.max':
+            name + ' must be less than or equal to 100 characters long',
+        'string.alphanum': name + ' must only contain alpha-numeric characters',
+        'string.empty': name + ' field is required',
+    };
+}
 
 const signUpSchema = Joi.object({
     firstname: Joi.string()
@@ -16,21 +18,27 @@ const signUpSchema = Joi.object({
         .min(2)
         .max(100)
         .required()
-        .messages({ nameMessages, 'string.empty': 'First name is required' }),
+        .messages({
+            ...createMessages('First name'),
+            'string.empty': 'First name is required',
+        }),
     lastname: Joi.string()
         .trim()
         .alphanum()
         .min(2)
         .max(100)
         .required()
-        .messages({ nameMessages, 'string.empty': 'Last name is required' }),
+        .messages({
+            ...createMessages('Last name'),
+            'string.empty': 'Last name is required',
+        }),
     username: Joi.string()
         .alphanum()
-        .min(3)
+        .min(2)
         .max(30)
         .required()
         .messages({
-            ...nameMessages,
+            ...createMessages('Username'),
             'string.empty': 'Username is required',
         }),
     password: Joi.string()
