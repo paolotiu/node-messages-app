@@ -1,5 +1,5 @@
-@use "sass:color";
-
+@import 'form';
+@import 'screen-size';
 $colors: (
     primary: #34626c,
     accent: #c6b497,
@@ -8,64 +8,11 @@ $colors: (
 );
 
 $font: Montserrat, Roboto;
-// Small tablets and large smartphones (landscape view)
-$screen-sm-min: 576px;
 
-// Small tablets (portrait view)
-$screen-md-min: 768px;
-
-// Tablets and small desktops
-$screen-lg-min: 992px;
-
-// Large tablets and desktops
-$screen-xl-min: 1200px;
-
-// Larger tablets and desktops
-$screen-xxl-min: 1700px;
-
-// Small devices
-@mixin sm {
-    @media (min-width: #{$screen-sm-min}) {
-        @content;
-    }
-}
-
-// Medium devices
-@mixin md {
-    @media (min-width: #{$screen-md-min}) {
-        @content;
-    }
-}
-
-// Large devices
-@mixin lg {
-    @media (min-width: #{$screen-lg-min}) {
-        @content;
-    }
-}
-
-// Extra large devices
-@mixin xl {
-    @media (min-width: #{$screen-xl-min}) {
-        @content;
-    }
-}
-
-// Extra large devices
-@mixin xxl {
-    @media (min-width: #{$screen-xxl-min}) {
-        @content;
-    }
-}
-@function color($color-name) {
-    @return map-get($colors, $color-name);
-}
-
-@mixin desktop {
-    @media (max-width: #{$mobile}) {
-        @content;
-    }
-}
+$grid-size: (
+    xs: 40%,
+    sm: 55%,
+);
 
 html,
 body {
@@ -78,6 +25,10 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
 }
 
 #bg2,
@@ -93,7 +44,10 @@ body {
 
 #bg {
     background-color: color(primary);
-    clip-path: polygon(0 0, 55% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, map-get($grid-size, default) 0, 100% 100%, 0% 100%);
+    @include sm {
+        clip-path: polygon(0 0, 55% 0, 100% 100%, 0% 100%);
+    }
     @include md {
         clip-path: polygon(0 0, 65% 0, 100% 100%, 0% 100%);
     }
@@ -120,13 +74,14 @@ button {
     padding: 20px;
 
     #logo {
+        color: color(accent);
         font-weight: 200;
         text-transform: uppercase;
         font-size: 2em;
     }
     ul {
         display: grid;
-        grid-template-columns: 55% auto;
+        grid-template-columns: 50% auto;
         list-style-type: none;
 
         @include md {
@@ -136,22 +91,19 @@ button {
             display: inline;
         }
         .nav-links {
-            padding-left: 1em;
             display: flex;
             width: 100%;
             justify-content: flex-end;
             justify-self: center;
+            align-items: center;
             @include md {
                 padding-left: 2em;
             }
-            button {
+            a {
+                color: color(primary);
+                cursor: pointer;
                 margin: 0 1em;
-                border: 1px solid color(primary-dark);
-                padding: 0.2em 0.5em;
-                border-radius: 4px;
-                @include md {
-                    margin: 0 2em;
-                    padding: 0.5em 0.7em;
+                @include sm {
                 }
             }
         }
