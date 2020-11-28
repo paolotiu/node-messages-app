@@ -24,8 +24,6 @@ exports.sign_up_post = [
                 abortEarly: false,
             });
             if (error) {
-                const errors = {};
-
                 error.details.forEach((err) => {
                     errors[err.context.label] = {
                         message: err.message,
@@ -36,12 +34,33 @@ exports.sign_up_post = [
                 return res.render('sign-up', {
                     title: 'Create a new user',
                     errors,
+                    user,
                 });
-            }
+            } else {
+                const checkUser = await User.findOne({
+                    username: value.username,
+                });
+                const errors = {};
+                if (checkUser) {
+                    errors.username = { message: 'Username already taken' };
+                    return res.render('sign-up', {
+                        title: 'Create a new user',
+                        errors,
+                        user,
+                    });
+                } else {
+                    const newUser = new User({
+                        ...value,
+                        status: 'user',
+                    });
 
-            return res.json(error.details);
+                    await newUser.save();
+                    return res.redirect('/');
+                }
+            }
         } catch (error) {
-            return res.send(error);
+            console.log(error);
+            return next(error);
         }
     },
 ];
