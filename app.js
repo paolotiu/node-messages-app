@@ -7,6 +7,16 @@ var exphbs = require('express-handlebars');
 const nconf = require('nconf');
 nconf.argv().env().file({ file: './secrets.json' });
 
+//Auth modules
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
+
+//Models
+const User = require('./models/User');
+
+//Routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -14,8 +24,39 @@ var app = express();
 var hbs = exphbs.create({
     /* config */
 });
-// view engine setup
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+passport.use(
+    new LocalStrategy((username, password, done) => {
+        User.findOne({ username: username }, (err, user) => {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                console.log('INCORECT USER');
+                return done(null, false, { msg: 'Incorrect username' });
+            }
+            if (user.password !== password) {
+                console.log('INCORECT Pass');
+                return done(null, false, { msg: 'Incorrect password' });
+            }
+            return done(null, user);
+        });
+    })
+);
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
 
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// view engine setup
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
