@@ -19,6 +19,17 @@ const User = require('./models/User');
 //Routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+//mongoose setup
+const mongoose = require('mongoose');
+const mongoDB =
+    nconf.get('MONGODB_URI') || process.env.MONGODB_URI || env.DB_URL;
+mongoose.connect(mongoDB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 var app = express();
 var hbs = exphbs.create({
@@ -27,20 +38,26 @@ var hbs = exphbs.create({
 app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 passport.use(
     new LocalStrategy((username, password, done) => {
-        User.findOne({ username: username }, (err, user) => {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                console.log('INCORECT USER');
-                return done(null, false, { msg: 'Incorrect username' });
-            }
-            if (user.password !== password) {
-                console.log('INCORECT Pass');
-                return done(null, false, { msg: 'Incorrect password' });
-            }
-            return done(null, user);
-        });
+        try {
+            User.findOne({ username: username }).exec((err, user) => {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    console.log('INCORECT USER');
+                    return done(null, false, { msg: 'Incorrect username' });
+                }
+                if (!bcrypt.compareSync(password, user.password)) {
+                    console.log('INCORECT Pass');
+                    return done(null, false, { msg: 'Incorrect password' });
+                }
+
+                return done(null, user);
+            });
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
     })
 );
 passport.serializeUser(function (user, done) {
@@ -60,17 +77,6 @@ app.use(passport.session());
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname + '/public'));
-//mongoose setup
-const mongoose = require('mongoose');
-const mongoDB =
-    nconf.get('MONGODB_URI') || process.env.MONGODB_URI || env.DB_URL;
-mongoose.connect(mongoDB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -78,6 +84,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req, res, next) {
+    if (req.isAuthenticated()) {
+        res.locals.currentUser = req.user.toObject();
+    }
+
+    next();
+});
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
