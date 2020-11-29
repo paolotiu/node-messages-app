@@ -64,7 +64,7 @@ exports.sign_up_post = [
                 return res.render('sign-up', {
                     title: 'Create a new user',
                     errors,
-                    values,
+                    user: values,
                 });
             } else {
                 // No errors detected
@@ -85,7 +85,7 @@ exports.sign_up_post = [
                     });
                 } else {
                     // Username not taken
-                    bcrypt.hash(user.password, 10, (err, hashedPassword) => {
+                    bcrypt.hash(values.password, 10, (err, hashedPassword) => {
                         value.password = hashedPassword;
                         const newUser = new User({
                             ...value,
