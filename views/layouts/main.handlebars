@@ -14,9 +14,16 @@
             <li>
                 <a href="/"><span id="logo">Chatty</span></a>
             </li>
-            {{#if loggedIn}}
+            {{#if user}}
+            <div class="nav-links">
+                <li>
+                    <a href="/" class="nav-links__link">
+                        Welcome, {{user.username}}
+                    </a>
+                </li>
 
-            {{/if}}
+            </div>
+            {{else}}
             <div class="nav-links">
                 <li>
                     <a href="/login" class="nav-links__link">
@@ -29,6 +36,8 @@
                     </a>
                 </li>
             </div>
+            {{/if}}
+
         </ul>
     </header>
     <div id="bg"></div>
