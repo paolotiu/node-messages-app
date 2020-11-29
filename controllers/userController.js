@@ -2,6 +2,7 @@ const User = require('../models/User');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router;
+
 const {
     signUpValidators,
     validationResult,
@@ -101,7 +102,6 @@ exports.sign_up_post = [
                 }
             }
         } catch (error) {
-            console.log(error);
             return next(error);
         }
     },

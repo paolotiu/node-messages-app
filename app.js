@@ -86,6 +86,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
     if (req.isAuthenticated()) {
+        console.log(req.user);
         res.locals.currentUser = req.user.toObject();
     }
 
