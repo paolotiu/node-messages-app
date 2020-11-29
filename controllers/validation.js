@@ -52,6 +52,7 @@ const signUpSchema = Joi.object({
             'string.empty': 'Password should not be empty',
         }),
 });
+
 // const signUpValidators = [
 //     body('firstname')
 //         .trim()
