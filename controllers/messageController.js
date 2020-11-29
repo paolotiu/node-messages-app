@@ -14,9 +14,19 @@ exports.homepage = [
     (req, res, next) => {
         Message.find()
             .populate('author')
+            .sort({ timestamp: -1 })
             .exec((err, docs) => {
                 const objectDocs = docs.map((doc) => {
                     const newDoc = doc.toObject();
+
+                    if (req.user) {
+                        if (
+                            doc.author.id.toString() === req.user._id.toString()
+                        ) {
+                            newDoc.isAuthor = true;
+                        }
+                    }
+
                     if (newDoc.timestamp) {
                         const date = new Date(newDoc.timestamp);
                         newDoc.timestamp = timeAgo.format(date);
@@ -37,6 +47,9 @@ exports.save_message = [
     (req, res, next) => {
         const values = req.body;
 
+        if (!values.text || !values.title) {
+            return res.redirect('/');
+        }
         const newMessage = new Message({
             ...values,
             timestamp: Date.now(),

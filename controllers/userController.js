@@ -11,8 +11,7 @@ const {
 const passport = require('passport');
 
 exports.login_get = (req, res, next) => {
-    console.log(res.locals);
-    res.render('login');
+    res.render('login', { title: 'Login' });
 };
 
 exports.login_post = [
@@ -21,6 +20,7 @@ exports.login_post = [
             if (err) return next(err);
             if (!user) {
                 res.render('login', {
+                    title: 'Login',
                     error: 'Incorrect username or password',
                 });
             } else {
@@ -44,7 +44,7 @@ exports.sign_up_get = (req, res, next) => {
 
 exports.sign_up_post = [
     async (req, res, next) => {
-        const user = req.body;
+        const values = req.body;
 
         try {
             // Joi validation
@@ -64,7 +64,7 @@ exports.sign_up_post = [
                 return res.render('sign-up', {
                     title: 'Create a new user',
                     errors,
-                    user,
+                    values,
                 });
             } else {
                 // No errors detected
@@ -81,7 +81,7 @@ exports.sign_up_post = [
                     return res.render('sign-up', {
                         title: 'Create a new user',
                         errors,
-                        user,
+                        user: values,
                     });
                 } else {
                     // Username not taken

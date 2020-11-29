@@ -19,4 +19,10 @@ router.post('/sign-up', userController.sign_up_post);
 
 //Make new message
 router.post('/new-message', messageController.save_message);
+
+//Log out
+router.get('/logout', (req, res, next) => {
+    req.logOut();
+    res.redirect('/');
+});
 module.exports = router;
