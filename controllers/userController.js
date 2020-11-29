@@ -92,7 +92,10 @@ exports.sign_up_post = [
                         });
                         newUser.save((err) => {
                             if (err) return next(err);
-                            return res.redirect('/');
+                            req.login(newUser, (err) => {
+                                if (err) return next(err);
+                                return res.redirect('/');
+                            });
                         });
                     });
                 }
