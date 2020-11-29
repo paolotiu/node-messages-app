@@ -4,7 +4,7 @@ const MessageSchema = new Schema({
     title: { type: String, required: true, maxlength: 40 },
     timestamp: Date,
     text: String,
-    author: Schema.Types.ObjectId,
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
