@@ -1,0 +1,16 @@
+$colors: (
+    primary: #34626c,
+    accent: #c6b497,
+    primary-dark: darken(#34626c, 5%),
+    primary-text: #fff,
+    accent-dark: darken(#c6b497, 20%),
+    card-bg: lighten(#c6b497, 32%),
+    warning: rgb(230, 91, 91),
+);
+
+@function color($color-name) {
+    @return map-get($colors, $color-name);
+}
+
+$border-radius: 4px;
+$font: Montserrat, Roboto;

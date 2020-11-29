@@ -1,14 +1,7 @@
 @import 'form';
 @import 'screen-size';
-$colors: (
-    primary: #34626c,
-    accent: #c6b497,
-    primary-dark: darken(#34626c, 5%),
-    primary-text: #fff,
-);
-
-$font: Montserrat, Roboto;
-
+@import 'home';
+@import 'base';
 $grid-size: (
     xs: 40%,
     sm: 55%,
@@ -25,6 +18,10 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
 }
 
 a {
@@ -44,7 +41,7 @@ a {
 
 #bg {
     background-color: color(primary);
-    clip-path: polygon(0 0, map-get($grid-size, default) 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 0, 45% 0, 100% 100%, 0% 100%);
     @include sm {
         clip-path: polygon(0 0, 55% 0, 100% 100%, 0% 100%);
     }
@@ -80,6 +77,7 @@ button {
         font-size: 2em;
     }
     ul {
+        width: 100%;
         display: grid;
         grid-template-columns: 50% auto;
         list-style-type: none;
@@ -96,15 +94,61 @@ button {
             justify-content: flex-end;
             justify-self: center;
             align-items: center;
+            @include sm {
+                justify-content: flex-end;
+            }
             @include md {
                 padding-left: 2em;
             }
-            a {
-                color: color(primary);
-                cursor: pointer;
+            li {
+                position: relative;
                 margin: 0 1em;
-                @include sm {
+                a {
+                    white-space: nowrap;
+                    color: color(primary);
+                    cursor: pointer;
+
+                    @include sm {
+                        margin: 0 1em;
+                    }
                 }
+            }
+        }
+
+        .nav-links.welcome {
+            width: 70%;
+
+            justify-self: flex-start;
+            justify-content: flex-start;
+            white-space: nowrap;
+            li {
+                margin: 0;
+                #user {
+                    color: color(primary);
+                }
+                #log-out {
+                    position: absolute;
+                    top: 2em;
+                    right: 1em;
+                    display: none;
+                    height: 0;
+                    opacity: 0;
+                    transition: all 0.3s linear;
+                }
+                #log-out.show {
+                    display: block;
+                    height: auto;
+                    opacity: 1;
+                }
+            }
+
+            @include sm {
+                justify-self: center;
+                margin: 0 1em;
+                justify-content: flex-end;
+            }
+            @include md {
+                width: 100%;
             }
         }
     }

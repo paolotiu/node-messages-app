@@ -1,7 +1,72 @@
+@import 'base';
+
 .form-wrapper {
     margin: 100px auto;
     display: grid;
     justify-items: center;
-    form {
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 80vw;
+        max-width: 600px;
+        & > * {
+            margin: 10px;
+        }
+        .form_input-container,
+        .form__input-container {
+            display: flex;
+            flex-direction: column;
+            input {
+                border-radius: 4px;
+                outline: none;
+                border: none;
+                margin-top: 0.3em;
+                padding: 0.5em 0.4em;
+                font-family: $font;
+            }
+        }
+        button {
+            padding: 0.4em;
+            border-radius: 4px;
+            background-color: color(accent);
+        }
+        .form__errors {
+            color: color(warning);
+        }
+    }
+}
+
+.message-form-container {
+    padding: 2em 1em;
+    width: 100%;
+    .message-form {
+        background-color: color(card-bg);
+        padding: 1em;
+        border-radius: $border-radius;
+        color: black;
+        .input-container {
+            margin: 1em 0;
+            display: flex;
+            flex-direction: column;
+            input,
+            textarea {
+                margin-top: 0.5em;
+                padding: 0.5em;
+                font-family: $font;
+                resize: none;
+            }
+            &:first-child {
+                flex-direction: row;
+                input {
+                    margin-left: 2em;
+                }
+            }
+        }
+        button[type='submit'] {
+            width: 100%;
+            background: color(primary-dark);
+            padding: 1em;
+            border-radius: $border-radius;
+        }
     }
 }

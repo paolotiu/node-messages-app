@@ -47,6 +47,3 @@ $screen-xxl-min: 1700px;
         @content;
     }
 }
-@function color($color-name) {
-    @return map-get($colors, $color-name);
-}
